@@ -1,0 +1,13 @@
+[
+  {
+    "name": "opt-in to public listing",
+    "steps": [
+      {
+        "send": { "callback": "listing:optin:ORD-00001" },
+        "expect": [
+          { "method": "editMessageText", "payload": { "text": "Order not found." } }
+        ]
+      }
+    ]
+  }
+]

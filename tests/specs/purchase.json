@@ -1,0 +1,42 @@
+[
+  {
+    "name": "browse country shows available numbers",
+    "steps": [
+      {
+        "send": { "text": "/browse" },
+        "expect": [
+          { "method": "sendMessage", "payload": { "text": "Pick a country to see available numbers:" } }
+        ]
+      },
+      {
+        "send": { "callback": "browse:country:US" },
+        "expect": [
+          { "method": "editMessageText", "payload": { "text": "🇺🇸 United States\n\nChoose a number:" } }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "select number shows confirmation",
+    "steps": [
+      {
+        "send": { "text": "/browse" },
+        "expect": [
+          { "method": "sendMessage" }
+        ]
+      },
+      {
+        "send": { "callback": "browse:country:US" },
+        "expect": [
+          { "method": "editMessageText" }
+        ]
+      },
+      {
+        "send": { "callback": "browse:select:NUM-00001" },
+        "expect": [
+          { "method": "editMessageText", "payload": { "text": "🇺🇸 +1 (555) 1000\n\nCountry: United States\nSKU: US-NUM-1\nPrice: USD 2.50\n\nConfirm purchase?" } }
+        ]
+      }
+    ]
+  }
+]

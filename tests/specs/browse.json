@@ -1,19 +1,28 @@
 [
   {
-    "name": "/browse",
+    "name": "/browse shows country list",
     "steps": [
       {
+        "send": { "text": "/browse" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Show country selection for available virtual numbers"
+              "text": "Pick a country to see available numbers:"
             }
           }
-        ],
-        "send": {
-          "text": "/browse"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "browse button shows country list",
+    "steps": [
+      {
+        "send": { "callback": "browse:countries" },
+        "expect": [
+          { "method": "editMessageText" }
+        ]
       }
     ]
   }

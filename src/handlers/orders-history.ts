@@ -1,17 +1,44 @@
 import { Composer } from "grammy";
+import type { Ctx } from "../bot.js";
+import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
+import { getUserOrders, getCountry, getListing } from "../storage.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-// Menu: wire this into /start via registerMainMenuItem({ label: "View My Numbers", data: "orders:history" }) if the toolkit exposes it.
+const composer = new Composer<Ctx>();
 
-const composer = new Composer();
+const composer2 = new Composer<Ctx>();
 
-composer.callbackQuery("orders:history", async (ctx) => {
+composer2.callbackQuery("orders:history", async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.reply("Display user's purchased numbers and listing status");
+  const orders = getUserOrders(ctx.from!.id);
+
+  if (orders.length === 0) {
+    await ctx.editMessageText("You haven't purchased any numbers yet.\n\nTap 🌍 Browse Numbers to find one.", {
+      reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+    });
+    return;
+  }
+
+  const lines = orders.map((o) => {
+    const country = getCountry(o.countryCode);
+    const listing = getListing(o.id);
+    const status = o.paymentStatus === "completed" ? "✅ Active" : o.paymentStatus === "refunded" ? "↩️ Refunded" : "⏳ Pending";
+    const listStatus = listing ? (listing.visible ? "📢 Public" : "🔒 Private") : "—";
+    return `${getCountryFlag(o.countryCode)} ${o.number}\nOrder: ${o.id} · ${country?.name ?? o.countryCode}\n${status} · ${listStatus}`;
+  });
+
+  await ctx.editMessageText(`Your numbers (${orders.length}):\n\n${lines.join("\n\n")}`, {
+    reply_markup: inlineKeyboard([
+      [inlineButton("⬅️ Back to menu", "menu:main")],
+    ]),
+  });
 });
 
-export default composer;
+function getCountryFlag(code: string): string {
+  const flags: Record<string, string> = {
+    US: "🇺🇸", UK: "🇬🇧", CA: "🇨🇦", DE: "🇩🇪", FR: "🇫🇷",
+    AU: "🇦🇺", JP: "🇯🇵", BR: "🇧🇷", IN: "🇮🇳", CN: "🇨🇳",
+  };
+  return flags[code] ?? "🏳️";
+}
+
+export default composer2;

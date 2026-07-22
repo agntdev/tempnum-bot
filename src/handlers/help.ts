@@ -2,15 +2,18 @@ import { Composer } from "grammy";
 import type { Ctx } from "../bot.js";
 import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
 
-// /help — plain-language explanation for non-technical users. This bot is
-// button-driven: tell the user to tap /start to open the menu rather than listing
-// slash commands. The same text is shown when the user taps the Help button on the
-// main menu (`menu:help`). Enhance the copy for your specific bot; keep it short.
 const composer = new Composer<Ctx>();
 
-const HELP =
-  "ℹ️ Tap /start to open the menu, then pick what you want from the buttons.\n\n" +
-  "Everything in this bot is reachable by tapping — you don't need to remember any commands.";
+const HELP = (
+  "ℹ️ How Virtual Numbers works\n\n" +
+  "• Tap 🌍 Browse to pick a country and number\n" +
+  "• Pay once — the number is yours for a single verification\n" +
+  "• You'll receive the number right here in chat\n" +
+  "• Optionally list it publicly for others to see\n\n" +
+  "Refund policy\n" +
+  "If a number doesn't work for your verification, contact @support within 24 hours for a full refund.\n\n" +
+  "Need help? Tap /start to go back to the menu."
+);
 
 const backToMenu = inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]);
 
