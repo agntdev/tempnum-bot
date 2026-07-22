@@ -1,14 +1,27 @@
 [
   {
-    "name": "/start replies with the welcome + main menu",
+    "name": "/start replies with welcome and main menu",
     "steps": [
       {
         "send": { "text": "/start" },
         "expect": [
           {
             "method": "sendMessage",
-            "payload": { "text": "👋 Welcome! Tap a button below to get started." }
+            "payload": {
+              "text": "👋 Welcome to Virtual Numbers!\n\nGet a one-time virtual phone number for verification, privacy, or testing. Tap a button below to get started."
+            }
           }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "back to menu re-renders welcome",
+    "steps": [
+      {
+        "send": { "callback": "menu:main" },
+        "expect": [
+          { "method": "editMessageText" }
         ]
       }
     ]

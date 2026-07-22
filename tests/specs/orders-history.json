@@ -1,19 +1,17 @@
 [
   {
-    "name": "View My Numbers",
+    "name": "View My Numbers with no orders shows empty state",
     "steps": [
       {
+        "send": { "callback": "orders:history" },
         "expect": [
           {
-            "method": "sendMessage",
+            "method": "editMessageText",
             "payload": {
-              "text": "Display user's purchased numbers and listing status"
+              "text": "You haven't purchased any numbers yet.\n\nTap 🌍 Browse Numbers to find one."
             }
           }
-        ],
-        "send": {
-          "callback": "orders:history"
-        }
+        ]
       }
     ]
   }

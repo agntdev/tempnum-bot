@@ -1,0 +1,13 @@
+[
+  {
+    "name": "admin panel access denied for non-admin",
+    "steps": [
+      {
+        "send": { "callback": "admin:panel" },
+        "expect": [
+          { "method": "answerCallbackQuery", "payload": { "text": "Not authorized" } }
+        ]
+      }
+    ]
+  }
+]
